@@ -1,58 +1,54 @@
+<!-- src/components/HelloDecorator.vue -->
+<!-- This is an alternative way to define the Hello component using decorators -->
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://github.com/vuejs/vue-cli/tree/dev/docs" target="_blank">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank">typescript</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest" target="_blank">unit-jest</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org/en/essentials/getting-started.html" target="_blank">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org/en/intro.html" target="_blank">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org/en" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div class="container col-6">
+        <input type="number" v-model="enthusiasm" class="form-control">
+        <div class="greeting">Hello {{name}}{{exclamationMarks}}</div>
+        <button @click="decrement" class="btn btn-danger">-</button>
+        <button @click="increment" class="btn btn-success">+</button>
+
+        <hr>
+
+        <input type="text" v-model="username"  class="form-control">
+        <input type="password" v-model="password"  class="form-control">
+        <button class="btn btn-success" @click="login">Login</button>
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+    import { Vue, Component, Prop } from "vue-property-decorator";
 
-@Component
-export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
-}
+    @Component
+    export default class HelloDecorator extends Vue {
+        @Prop() name!: string;
+        @Prop() initialEnthusiasm!: number;
+
+        enthusiasm = this.initialEnthusiasm;
+
+        username: string = '';
+        password: string = '';
+
+        increment() {
+            this.enthusiasm++;
+        }
+        decrement() {
+            if (this.enthusiasm > 1) {
+                this.enthusiasm--;
+            }
+        }
+
+        get exclamationMarks(): string {
+            return Array(this.enthusiasm + 1).join('!');
+        }
+
+        login () {
+            console.log(this.username, this.password)
+        }
+    }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style>
+    .greeting {
+        font-size: 20px;
+    }
 </style>
